@@ -1,0 +1,5 @@
+<gui:MainWindow title="Calculator" maximized="true"
+               xmlns:gui="com.emirovschi.midps2.calc.gui"
+               xmlns="org.apache.pivot.wtk">
+
+</gui:MainWindow>
