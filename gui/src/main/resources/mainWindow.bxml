@@ -1,5 +1,54 @@
 <gui:MainWindow title="Calculator" maximized="true"
                xmlns:gui="com.emirovschi.midps2.calc.gui"
                xmlns="org.apache.pivot.wtk">
+    <TablePane styles="{verticalSpacing:0, showHorizontalGridLines:false, horizontalSpacing:0, showVerticalGridLines:false}">
+        <columns>
+            <TablePane.Column width="1*"/>
+            <TablePane.Column width="1*"/>
+            <TablePane.Column width="1*"/>
+            <TablePane.Column width="1*"/>
+            <TablePane.Column width="1*"/>
+        </columns>
 
+        <TablePane.Row height="1*">
+            <Label text="1,234,567,890,123,456 + 1,234,567,890,123,456" TablePane.columnSpan="5"
+                   styles="{horizontalAlignment:'right',  verticalAlignment:'center', wrapText:true, font:{size:15}}}"/>
+        </TablePane.Row>
+        <TablePane.Row height="1*">
+            <Separator TablePane.columnSpan="5"/>
+        </TablePane.Row>
+        <TablePane.Row height="2*">
+            <Label text="2,469,135,780,246,912" TablePane.columnSpan="5"
+                   styles="{horizontalAlignment:'right',  verticalAlignment:'center', wrapText:true, font:{size:30, bold:true}}"/>
+        </TablePane.Row>
+
+        <TablePane.Row height="2*">
+            <PushButton buttonData="1" styles="{font:{size:30, bold:true}}"/>
+            <PushButton buttonData="2" styles="{font:{size:30, bold:true}}"/>
+            <PushButton buttonData="3" styles="{font:{size:30, bold:true}}"/>
+            <PushButton buttonData="+" styles="{font:{size:30, bold:true}}"/>
+            <PushButton buttonData="-" styles="{font:{size:30, bold:true}}"/>
+        </TablePane.Row>
+        <TablePane.Row height="2*">
+            <PushButton buttonData="4" styles="{font:{size:30, bold:true}}"/>
+            <PushButton buttonData="5" styles="{font:{size:30, bold:true}}"/>
+            <PushButton buttonData="6" styles="{font:{size:30, bold:true}}"/>
+            <PushButton buttonData="×" styles="{font:{size:30, bold:true}}"/>
+            <PushButton buttonData="/" styles="{font:{size:30, bold:true}}"/>
+        </TablePane.Row>
+        <TablePane.Row height="2*">
+            <PushButton buttonData="7" styles="{font:{size:30, bold:true}}"/>
+            <PushButton buttonData="8" styles="{font:{size:30, bold:true}}"/>
+            <PushButton buttonData="9" styles="{font:{size:30, bold:true}}"/>
+            <PushButton buttonData="^" styles="{font:{size:30, bold:true}}"/>
+            <PushButton buttonData="√" styles="{font:{size:30, bold:true}}"/>
+        </TablePane.Row>
+        <TablePane.Row height="2*">
+            <PushButton buttonData="." styles="{font:{size:30, bold:true}}"/>
+            <PushButton buttonData="0" styles="{font:{size:30, bold:true}}"/>
+            <PushButton buttonData="+/-" styles="{font:{size:30, bold:true}}"/>
+            <PushButton buttonData="C" styles="{font:{size:30, bold:true}}"/>
+            <PushButton buttonData="=" styles="{font:{size:30, bold:true}}"/>
+        </TablePane.Row>
+    </TablePane>
 </gui:MainWindow>
