@@ -2,8 +2,6 @@ package com.emirovschi.midps2.calc;
 
 import com.emirovschi.midps2.calc.operators.Operator;
 
-import java.text.MessageFormat;
-
 public class SimpleCalculator implements Calculator
 {
     private Double left, right;
@@ -50,23 +48,8 @@ public class SimpleCalculator implements Calculator
     }
 
     @Override
-    public String getOperation()
+    public Operation getOperation()
     {
-        if(left == null)
-        {
-            return "";
-        }
-        else if(operator == null)
-        {
-            return MessageFormat.format("{0}", left);
-        }
-        else if(right == null)
-        {
-            return MessageFormat.format(operator.getTemplate(), left, "");
-        }
-        else
-        {
-            return MessageFormat.format(operator.getTemplate(), left, right);
-        }
+        return new Operation(left, operator, right);
     }
 }

@@ -28,7 +28,7 @@ public class SimpleCalculatorTest
     @Test
     public void shouldBeEmpty()
     {
-        assertEquals("", calculator.getOperation());
+        assertEquals(new Operation(), calculator.getOperation());
     }
 
     @Test
@@ -40,7 +40,7 @@ public class SimpleCalculatorTest
         calculator.push(operator);
         calculator.clear();
 
-        assertEquals("", calculator.getOperation());
+        assertEquals(new Operation(), calculator.getOperation());
     }
 
     @Test
@@ -51,7 +51,7 @@ public class SimpleCalculatorTest
         final double result = calculator.push(left);
 
         assertEquals(left, result, 0.001);
-        assertEquals("10", calculator.getOperation());
+        assertEquals(new Operation(left), calculator.getOperation());
     }
 
     @Test
@@ -63,7 +63,7 @@ public class SimpleCalculatorTest
         calculator.push(operator);
 
         assertEquals(left, result, 0.001);
-        assertEquals("10 + ", calculator.getOperation());
+        assertEquals(new Operation(left, operator), calculator.getOperation());
     }
 
     @Test
@@ -77,7 +77,7 @@ public class SimpleCalculatorTest
         final double result = calculator.push(right);
 
         assertEquals(left + right, result, 0.001);
-        assertEquals("10 + 5", calculator.getOperation());
+        assertEquals(new Operation(left, operator, right), calculator.getOperation());
     }
 
     @Test
@@ -94,7 +94,7 @@ public class SimpleCalculatorTest
         final double result = calculator.push(second);
 
         assertEquals(left + right + second, result, 0.001);
-        assertEquals("15 + 3", calculator.getOperation());
+        assertEquals(new Operation(left + right, operator, second), calculator.getOperation());
     }
 
     @Test
@@ -110,6 +110,6 @@ public class SimpleCalculatorTest
         final double result = calculator.push(second);
 
         assertEquals(second, result, 0.001);
-        assertEquals("3", calculator.getOperation());
+        assertEquals(new Operation(second), calculator.getOperation());
     }
 }

@@ -10,5 +10,5 @@ public interface Calculator
 
     void push(Operator operator);
 
-    String getOperation();
+    Operation getOperation();
 }
