@@ -1,6 +1,5 @@
-<gui:MainWindow title="Calculator" maximized="true"
+<controls:MainWindow title="Calculator" maximized="true" bxml:id="mainWindow"
                 xmlns:bxml="http://pivot.apache.org/bxml"
-                xmlns:gui="com.emirovschi.midps2.calc.gui"
                 xmlns:controls="com.emirovschi.midps2.calc.gui.controls"
                 xmlns="org.apache.pivot.wtk">
     <TablePane styles="{verticalSpacing:0, showHorizontalGridLines:false, horizontalSpacing:0, showVerticalGridLines:false}">
@@ -53,4 +52,4 @@
             <PushButton buttonData="=" styles="{font:{size:30, bold:true}}"/>
         </TablePane.Row>
     </TablePane>
-</gui:MainWindow>
+</controls:MainWindow>

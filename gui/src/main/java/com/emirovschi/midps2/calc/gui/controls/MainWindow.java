@@ -1,4 +1,4 @@
-package com.emirovschi.midps2.calc.gui;
+package com.emirovschi.midps2.calc.gui.controls;
 
 import com.emirovschi.midps2.calc.converters.DecimalNumberConverter;
 import com.emirovschi.midps2.calc.converters.NumberConverter;

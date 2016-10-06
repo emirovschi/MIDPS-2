@@ -1,5 +1,6 @@
 package com.emirovschi.midps2.calc.gui;
 
+import com.emirovschi.midps2.calc.gui.controls.MainWindow;
 import org.apache.pivot.beans.BXMLSerializer;
 import org.apache.pivot.collections.Map;
 import org.apache.pivot.wtk.DesktopApplicationContext;
