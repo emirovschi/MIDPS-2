@@ -1,6 +1,8 @@
 <gui:MainWindow title="Calculator" maximized="true"
-               xmlns:gui="com.emirovschi.midps2.calc.gui"
-               xmlns="org.apache.pivot.wtk">
+                xmlns:bxml="http://pivot.apache.org/bxml"
+                xmlns:gui="com.emirovschi.midps2.calc.gui"
+                xmlns:controls="com.emirovschi.midps2.calc.gui.controls"
+                xmlns="org.apache.pivot.wtk">
     <TablePane styles="{verticalSpacing:0, showHorizontalGridLines:false, horizontalSpacing:0, showVerticalGridLines:false}">
         <columns>
             <TablePane.Column width="1*"/>
@@ -11,14 +13,14 @@
         </columns>
 
         <TablePane.Row height="1*">
-            <Label text="1,234,567,890,123,456 + 1,234,567,890,123,456" TablePane.columnSpan="5"
+            <Label TablePane.columnSpan="5"
                    styles="{horizontalAlignment:'right',  verticalAlignment:'center', wrapText:true, font:{size:15}}}"/>
         </TablePane.Row>
         <TablePane.Row height="1*">
             <Separator TablePane.columnSpan="5"/>
         </TablePane.Row>
         <TablePane.Row height="2*">
-            <Label text="2,469,135,780,246,912" TablePane.columnSpan="5"
+            <Label bxml:id="currentValue" TablePane.columnSpan="5" text="0"
                    styles="{horizontalAlignment:'right',  verticalAlignment:'center', wrapText:true, font:{size:30, bold:true}}"/>
         </TablePane.Row>
 
