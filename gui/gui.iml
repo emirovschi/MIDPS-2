@@ -16,5 +16,7 @@
     <orderEntry type="library" name="Maven: org.apache.pivot:pivot-core:2.0.4" level="project" />
     <orderEntry type="library" name="Maven: org.apache.pivot:pivot-wtk:2.0.4" level="project" />
     <orderEntry type="library" name="Maven: org.apache.pivot:pivot-wtk-terra:2.0.4" level="project" />
+    <orderEntry type="module" module-name="core" />
+    <orderEntry type="library" name="Maven: org.mockito:mockito-all:1.10.19" level="project" />
   </component>
 </module>

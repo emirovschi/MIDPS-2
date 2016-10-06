@@ -37,6 +37,11 @@
             <artifactId>pivot-wtk-terra</artifactId>
             <version>${pivot.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.emirovschi.midps2</groupId>
+            <artifactId>core</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
     </dependencies>
 
 </project>
