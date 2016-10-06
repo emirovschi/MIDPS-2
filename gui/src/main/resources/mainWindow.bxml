@@ -24,29 +24,29 @@
         </TablePane.Row>
 
         <TablePane.Row height="2*">
-            <PushButton buttonData="1" styles="{font:{size:30, bold:true}}"/>
-            <PushButton buttonData="2" styles="{font:{size:30, bold:true}}"/>
-            <PushButton buttonData="3" styles="{font:{size:30, bold:true}}"/>
+            <controls:InputButton digit="1" register="$mainWindow" styles="{font:{size:30, bold:true}}"/>
+            <controls:InputButton digit="2" register="$mainWindow" styles="{font:{size:30, bold:true}}"/>
+            <controls:InputButton digit="3" register="$mainWindow" styles="{font:{size:30, bold:true}}"/>
             <PushButton buttonData="+" styles="{font:{size:30, bold:true}}"/>
             <PushButton buttonData="-" styles="{font:{size:30, bold:true}}"/>
         </TablePane.Row>
         <TablePane.Row height="2*">
-            <PushButton buttonData="4" styles="{font:{size:30, bold:true}}"/>
-            <PushButton buttonData="5" styles="{font:{size:30, bold:true}}"/>
-            <PushButton buttonData="6" styles="{font:{size:30, bold:true}}"/>
+            <controls:InputButton digit="4" register="$mainWindow" styles="{font:{size:30, bold:true}}"/>
+            <controls:InputButton digit="5" register="$mainWindow" styles="{font:{size:30, bold:true}}"/>
+            <controls:InputButton digit="6" register="$mainWindow" styles="{font:{size:30, bold:true}}"/>
             <PushButton buttonData="×" styles="{font:{size:30, bold:true}}"/>
             <PushButton buttonData="/" styles="{font:{size:30, bold:true}}"/>
         </TablePane.Row>
         <TablePane.Row height="2*">
-            <PushButton buttonData="7" styles="{font:{size:30, bold:true}}"/>
-            <PushButton buttonData="8" styles="{font:{size:30, bold:true}}"/>
-            <PushButton buttonData="9" styles="{font:{size:30, bold:true}}"/>
+            <controls:InputButton digit="7" register="$mainWindow" styles="{font:{size:30, bold:true}}"/>
+            <controls:InputButton digit="8" register="$mainWindow" styles="{font:{size:30, bold:true}}"/>
+            <controls:InputButton digit="9" register="$mainWindow" styles="{font:{size:30, bold:true}}"/>
             <PushButton buttonData="^" styles="{font:{size:30, bold:true}}"/>
             <PushButton buttonData="√" styles="{font:{size:30, bold:true}}"/>
         </TablePane.Row>
         <TablePane.Row height="2*">
             <PushButton buttonData="." styles="{font:{size:30, bold:true}}"/>
-            <PushButton buttonData="0" styles="{font:{size:30, bold:true}}"/>
+            <controls:InputButton digit="0" register="$mainWindow" styles="{font:{size:30, bold:true}}"/>
             <PushButton buttonData="+/-" styles="{font:{size:30, bold:true}}"/>
             <PushButton buttonData="C" styles="{font:{size:30, bold:true}}"/>
             <PushButton buttonData="=" styles="{font:{size:30, bold:true}}"/>
