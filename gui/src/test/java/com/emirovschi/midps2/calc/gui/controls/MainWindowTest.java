@@ -25,4 +25,19 @@ public class MainWindowTest
         verify(numericLabel).append(digit);
     }
 
+    @Test
+    public void shouldRegisterDecimalButton() throws Exception
+    {
+        final int digit = 1;
+        final DecimalButton button = new DecimalButton();
+        final NumericLabel numericLabel = mock(NumericLabel.class);
+
+        mainWindow.setNumericLabel(numericLabel);
+
+        mainWindow.register(button);
+        button.press();
+
+        verify(numericLabel).startDecimal();
+    }
+
 }
