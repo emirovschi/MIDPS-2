@@ -12,7 +12,7 @@
         </columns>
 
         <TablePane.Row height="1*">
-            <Label TablePane.columnSpan="5"
+            <Label bxml:id="currentOperation" TablePane.columnSpan="5"
                    styles="{horizontalAlignment:'right',  verticalAlignment:'center', wrapText:true, font:{size:15}}}"/>
         </TablePane.Row>
         <TablePane.Row height="1*">
@@ -27,15 +27,19 @@
             <controls:InputButton digit="1" register="$mainWindow" styles="{font:{size:30, bold:true}}"/>
             <controls:InputButton digit="2" register="$mainWindow" styles="{font:{size:30, bold:true}}"/>
             <controls:InputButton digit="3" register="$mainWindow" styles="{font:{size:30, bold:true}}"/>
-            <PushButton buttonData="+" styles="{font:{size:30, bold:true}}"/>
-            <PushButton buttonData="-" styles="{font:{size:30, bold:true}}"/>
+            <controls:OperatorButton buttonData="+" operator="com.emirovschi.midps2.calc.operators.AddOperator"
+                                     register="$mainWindow" styles="{font:{size:30, bold:true}}"/>
+            <controls:OperatorButton buttonData="-" operator="com.emirovschi.midps2.calc.operators.SubtractOperator"
+                                     register="$mainWindow" styles="{font:{size:30, bold:true}}"/>
         </TablePane.Row>
         <TablePane.Row height="2*">
             <controls:InputButton digit="4" register="$mainWindow" styles="{font:{size:30, bold:true}}"/>
             <controls:InputButton digit="5" register="$mainWindow" styles="{font:{size:30, bold:true}}"/>
             <controls:InputButton digit="6" register="$mainWindow" styles="{font:{size:30, bold:true}}"/>
-            <PushButton buttonData="×" styles="{font:{size:30, bold:true}}"/>
-            <PushButton buttonData="/" styles="{font:{size:30, bold:true}}"/>
+            <controls:OperatorButton buttonData="×" operator="com.emirovschi.midps2.calc.operators.MultiplyOperator"
+                                     register="$mainWindow" styles="{font:{size:30, bold:true}}"/>
+            <controls:OperatorButton buttonData="/" operator="com.emirovschi.midps2.calc.operators.DivideOperator"
+                                     register="$mainWindow" styles="{font:{size:30, bold:true}}"/>
         </TablePane.Row>
         <TablePane.Row height="2*">
             <controls:InputButton digit="7" register="$mainWindow" styles="{font:{size:30, bold:true}}"/>

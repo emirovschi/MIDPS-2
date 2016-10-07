@@ -1,22 +1,53 @@
 package com.emirovschi.midps2.calc.gui.controls;
 
+import com.emirovschi.midps2.calc.Calculator;
+import com.emirovschi.midps2.calc.Operation;
+import com.emirovschi.midps2.calc.converters.NumberConverter;
+import com.emirovschi.midps2.calc.operators.Operator;
+import org.apache.pivot.wtk.Label;
+import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
+@RunWith(MockitoJUnitRunner.class)
 public class MainWindowTest
 {
+    @Mock
+    private NumberConverter numberConverter;
+
+    @Mock
+    private NumericLabel numericLabel;
+
+    @Mock
+    private Calculator calculator;
+
+    @Mock
+    private Label currentOperation;
+
+    @Mock
+    private Label currentValue;
+
+    @InjectMocks
     private MainWindow mainWindow = new MainWindow();
+
+    @Before
+    public void setUp()
+    {
+    }
 
     @Test
     public void shouldRegisterInputButton() throws Exception
     {
         final int digit = 1;
         final InputButton button = new InputButton();
-        final NumericLabel numericLabel = mock(NumericLabel.class);
 
-        mainWindow.setNumericLabel(numericLabel);
         button.setDigit(digit);
 
         mainWindow.register(button);
@@ -29,9 +60,6 @@ public class MainWindowTest
     public void shouldRegisterDecimalButton() throws Exception
     {
         final DecimalButton button = new DecimalButton();
-        final NumericLabel numericLabel = mock(NumericLabel.class);
-
-        mainWindow.setNumericLabel(numericLabel);
 
         mainWindow.register(button);
         button.press();
@@ -43,14 +71,38 @@ public class MainWindowTest
     public void shouldRegisterClearButton() throws Exception
     {
         final ClearButton button = new ClearButton();
-        final NumericLabel numericLabel = mock(NumericLabel.class);
-
-        mainWindow.setNumericLabel(numericLabel);
 
         mainWindow.register(button);
         button.press();
 
         verify(numericLabel).clear();
+        verify(calculator).clear();
+        verify(currentOperation).setText("");
     }
 
+    @Test
+    public void shouldRegisterOperatorButton() throws Exception
+    {
+        final double number = 100;
+        final String text = "text";
+
+        final Operator operator = mock(Operator.class);
+        final Operation operation = mock(Operation.class);
+
+
+        final OperatorButton button = new OperatorButton();
+        button.setOperator(operator);
+
+        when(numericLabel.getNumber()).thenReturn(number);
+        when(calculator.getOperation()).thenReturn(operation);
+        when(operation.toString(numberConverter)).thenReturn(text);
+
+        mainWindow.register(button);
+        button.press();
+
+        verify(calculator).push(number);
+        verify(calculator).push(operator);
+        verify(numericLabel).clear();
+        verify(currentOperation).setText(text);
+    }
 }
