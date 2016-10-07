@@ -28,7 +28,6 @@ public class MainWindowTest
     @Test
     public void shouldRegisterDecimalButton() throws Exception
     {
-        final int digit = 1;
         final DecimalButton button = new DecimalButton();
         final NumericLabel numericLabel = mock(NumericLabel.class);
 
@@ -38,6 +37,20 @@ public class MainWindowTest
         button.press();
 
         verify(numericLabel).startDecimal();
+    }
+
+    @Test
+    public void shouldRegisterClearButton() throws Exception
+    {
+        final ClearButton button = new ClearButton();
+        final NumericLabel numericLabel = mock(NumericLabel.class);
+
+        mainWindow.setNumericLabel(numericLabel);
+
+        mainWindow.register(button);
+        button.press();
+
+        verify(numericLabel).clear();
     }
 
 }

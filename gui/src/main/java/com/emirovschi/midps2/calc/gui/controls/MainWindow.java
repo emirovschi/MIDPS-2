@@ -36,6 +36,7 @@ public class MainWindow extends Window implements Bindable, ButtonRegister
         Matcher.of(button)
                 .when(InputButton.class).then(addListener(b -> numericLabel.append(b.getDigit())))
                 .when(DecimalButton.class).then(addListener(b -> numericLabel.startDecimal()))
+                .when(ClearButton.class).then(addListener(b -> numericLabel.clear()))
                 .match();
     }
 
