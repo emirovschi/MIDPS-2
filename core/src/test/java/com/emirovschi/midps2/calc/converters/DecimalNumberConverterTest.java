@@ -4,6 +4,8 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.when;
 
 public class DecimalNumberConverterTest
 {
@@ -167,5 +169,29 @@ public class DecimalNumberConverterTest
         final String result = converter.convert(number);
 
         assertEquals("Invalid", result);
+    }
+
+    @Test
+    public void shouldConvertDefaultIfNoDecimals() throws Exception
+    {
+        final double number = 0;
+        final String text = "text";
+        final NumberConverter numberConverter = spy(converter);
+
+        when(numberConverter.convert(number)).thenReturn(text);
+
+        final String result = numberConverter.convert(number, 0);
+
+        assertEquals(text, result);
+    }
+
+    @Test
+    public void shouldConvertUsingExactNumberOfDecimals() throws Exception
+    {
+        final double number = 0;
+
+        final String result = converter.convert(number, 3);
+
+        assertEquals("0.00", result);
     }
 }

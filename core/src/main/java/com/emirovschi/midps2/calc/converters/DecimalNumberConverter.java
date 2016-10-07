@@ -6,19 +6,24 @@ import java.text.ParseException;
 
 public class DecimalNumberConverter implements NumberConverter
 {
-    private static final String PATTERN = "###,##0.###";
+    private static final String DEFAULT_PATTERN = "###,##0.###";
+    private static final String DECIMAL_PATTERN = "###,##0.";
     private static final String SCIENTIFIC_PATTERN = "0.0###############E0";
     private static final Double SCIENTIFIC_MIN = 1E16;
 
     private final DecimalFormat decimalFormat;
+    private final DecimalFormat defaultFormat;
     private final DecimalFormat scientificDecimalFormat;
 
     public DecimalNumberConverter()
     {
         final DecimalFormatSymbols symbols = buildSymbols();
 
-        decimalFormat = new DecimalFormat(PATTERN, symbols);
+        decimalFormat = new DecimalFormat(DEFAULT_PATTERN, symbols);
         decimalFormat.setMaximumFractionDigits(Integer.MAX_VALUE);
+
+        defaultFormat = new DecimalFormat(DEFAULT_PATTERN, symbols);
+        defaultFormat.setMaximumFractionDigits(Integer.MAX_VALUE);
 
         scientificDecimalFormat = new DecimalFormat(SCIENTIFIC_PATTERN, symbols);
     }
@@ -28,7 +33,7 @@ public class DecimalNumberConverter implements NumberConverter
     {
         try
         {
-            return decimalFormat.parse(number).doubleValue();
+            return defaultFormat.parse(number).doubleValue();
         }
         catch (ParseException e)
         {
@@ -49,6 +54,18 @@ public class DecimalNumberConverter implements NumberConverter
     @Override
     public String convert(final double number)
     {
-        return Math.abs(number) < SCIENTIFIC_MIN ? decimalFormat.format(number) : scientificDecimalFormat.format(number);
+        return Math.abs(number) < SCIENTIFIC_MIN ? defaultFormat.format(number) : scientificDecimalFormat.format(number);
+    }
+
+    @Override
+    public String convert(final double number, final int decimals)
+    {
+        if(decimals == 0 || Math.abs(number) >= SCIENTIFIC_MIN)
+        {
+            return convert(number);
+        }
+
+        decimalFormat.applyPattern(DECIMAL_PATTERN + new String(new char[decimals - 1]).replace("\0", "0"));
+        return decimalFormat.format(number);
     }
 }

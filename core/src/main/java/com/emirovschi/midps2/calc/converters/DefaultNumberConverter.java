@@ -13,4 +13,10 @@ public class DefaultNumberConverter implements NumberConverter
     {
         return Double.toString(number);
     }
+
+    @Override
+    public String convert(final double number, final int decimals)
+    {
+        return convert(number);
+    }
 }
