@@ -267,4 +267,16 @@ public class NumericLabelTest
         assertEquals(0.111111111111111D, numericLabel.getNumber(), 0.0000000000000001D);
         assertEquals("0.111111111111111", numericLabel.getNumberText());
     }
+
+    @Test
+    public void shouldChangeSign() throws Exception
+    {
+        numericLabel.append(1);
+        numericLabel.changeSign();
+
+        when(numberConverter.convert(-1, 0)).thenReturn("-1");
+
+        assertEquals(-1D, numericLabel.getNumber(), 0.0001);
+        assertEquals("-1", numericLabel.getNumberText());
+    }
 }

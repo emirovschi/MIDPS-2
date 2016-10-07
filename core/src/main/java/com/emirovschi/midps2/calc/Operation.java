@@ -42,6 +42,11 @@ public class Operation
         this.right = right;
     }
 
+    public boolean isEmpty()
+    {
+        return left == null;
+    }
+
     public boolean canPushRight()
     {
         return operator != null && right == null;

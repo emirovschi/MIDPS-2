@@ -3,6 +3,7 @@ package com.emirovschi.midps2.calc.gui.controls;
 import com.emirovschi.midps2.calc.Calculator;
 import com.emirovschi.midps2.calc.Operation;
 import com.emirovschi.midps2.calc.converters.NumberConverter;
+import com.emirovschi.midps2.calc.operators.MultiplyOperator;
 import com.emirovschi.midps2.calc.operators.Operator;
 import org.apache.pivot.wtk.Label;
 import org.junit.Before;
@@ -12,6 +13,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyDouble;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
@@ -154,6 +156,54 @@ public class MainWindowTest
         button.press();
 
         verify(calculator).push(number);
+        verify(numericLabel).clear();
+        verify(currentValue).setText(resultText);
+        verify(currentOperation).setText(text);
+    }
+
+    @Test
+    public void shouldRegisterChangeSignButtonToChangeNumericValue() throws Exception
+    {
+        final double number = 100;
+        final String text = "text";
+        final String resultText = "resultText";
+
+        final Operation operation = mock(Operation.class);
+
+        final ChangeSignButton button = new ChangeSignButton();
+
+        when(calculator.getOperation()).thenReturn(operation);
+        when(operation.canPushRight()).thenReturn(true);
+
+        mainWindow.register(button);
+        button.press();
+
+        verify(numericLabel).changeSign();
+    }
+
+    @Test
+    public void shouldRegisterChangeSignButtonToMultiply() throws Exception
+    {
+        final double result = -200;
+        final String text = "text";
+        final String resultText = "resultText";
+
+        final Operation operation = mock(Operation.class);
+
+        final ChangeSignButton button = new ChangeSignButton();
+
+        when(calculator.push(-1D)).thenReturn(result);
+        when(calculator.getOperation()).thenReturn(operation);
+        when(operation.isEmpty()).thenReturn(false);
+        when(operation.canPushRight()).thenReturn(false);
+        when(numberConverter.convert(result)).thenReturn(resultText);
+        when(operation.toString(numberConverter)).thenReturn(text);
+
+        mainWindow.register(button);
+        button.press();
+
+        verify(calculator).push(any(MultiplyOperator.class));
+        verify(calculator).push(-1D);
         verify(numericLabel).clear();
         verify(currentValue).setText(resultText);
         verify(currentOperation).setText(text);

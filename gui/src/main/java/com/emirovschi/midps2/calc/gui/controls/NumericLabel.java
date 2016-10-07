@@ -116,4 +116,10 @@ public class NumericLabel
     {
         return String.valueOf(Math.round(number)).length() + Math.max(0, decimal - 1);
     }
+
+    public void changeSign()
+    {
+        number *= -1;
+        setText();
+    }
 }

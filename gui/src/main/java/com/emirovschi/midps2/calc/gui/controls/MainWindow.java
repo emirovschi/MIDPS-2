@@ -6,6 +6,7 @@ import com.emirovschi.midps2.calc.converters.DecimalNumberConverter;
 import com.emirovschi.midps2.calc.converters.NumberConverter;
 import com.emirovschi.midps2.calc.gui.ButtonRegister;
 import com.emirovschi.midps2.calc.matcher.Matcher;
+import com.emirovschi.midps2.calc.operators.MultiplyOperator;
 import com.emirovschi.midps2.calc.operators.Operator;
 import org.apache.pivot.beans.BXML;
 import org.apache.pivot.beans.Bindable;
@@ -47,6 +48,7 @@ public class MainWindow extends Window implements Bindable, ButtonRegister
                 .when(ClearButton.class).then(addListener(b -> clearCalculator()))
                 .when(OperatorButton.class).then(addListener(b -> pushOperator(b.getOperator())))
                 .when(EqualsButton.class).then(addListener(b -> calculate()))
+                .when(ChangeSignButton.class).then(addListener(b -> changeSign()))
                 .match();
     }
 
@@ -78,6 +80,22 @@ public class MainWindow extends Window implements Bindable, ButtonRegister
         if(calculator.getOperation().canPushRight())
         {
             final double result = calculator.push(numericLabel.getNumber());
+            numericLabel.clear();
+            currentValue.setText(numberConverter.convert(result));
+            currentOperation.setText(calculator.getOperation().toString(numberConverter));
+        }
+    }
+
+    private void changeSign()
+    {
+        if (calculator.getOperation().isEmpty() || calculator.getOperation().canPushRight())
+        {
+            numericLabel.changeSign();
+        }
+        else
+        {
+            calculator.push(new MultiplyOperator());
+            final double result = calculator.push(-1);
             numericLabel.clear();
             currentValue.setText(numberConverter.convert(result));
             currentOperation.setText(calculator.getOperation().toString(numberConverter));
