@@ -45,8 +45,10 @@
             <controls:InputButton digit="7" register="$mainWindow" styles="{font:{size:30, bold:true}}"/>
             <controls:InputButton digit="8" register="$mainWindow" styles="{font:{size:30, bold:true}}"/>
             <controls:InputButton digit="9" register="$mainWindow" styles="{font:{size:30, bold:true}}"/>
-            <PushButton buttonData="^" styles="{font:{size:30, bold:true}}"/>
-            <PushButton buttonData="√" styles="{font:{size:30, bold:true}}"/>
+            <controls:OperatorButton buttonData="^" operator="com.emirovschi.midps2.calc.operators.PowerOperator"
+                        register="$mainWindow" styles="{font:{size:30, bold:true}}"/>
+            <controls:OperatorButton buttonData="√" operator="com.emirovschi.midps2.calc.operators.RootOperator"
+                        register="$mainWindow" styles="{font:{size:30, bold:true}}"/>
         </TablePane.Row>
         <TablePane.Row height="2*">
             <controls:DecimalButton buttonData="." register="$mainWindow" styles="{font:{size:30, bold:true}}"/>
