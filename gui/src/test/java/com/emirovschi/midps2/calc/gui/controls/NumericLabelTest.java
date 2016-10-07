@@ -6,6 +6,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InOrder;
 
+import static com.emirovschi.midps2.calc.gui.controls.NumericLabel.MAX_LENGTH;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.AdditionalMatchers.eq;
 import static org.mockito.Matchers.eq;
@@ -223,4 +224,47 @@ public class NumericLabelTest
         assertEquals("0", numericLabel.getNumberText());
     }
 
+    @Test
+    public void shouldAddIntegerMax() throws Exception
+    {
+        for(int i = 0; i < MAX_LENGTH + 1; i++)
+        {
+            numericLabel.append(1);
+        }
+        
+        when(numberConverter.convert(1111111111111111D, 0)).thenReturn("1,111,111,111,111,111");
+
+        assertEquals(1111111111111111D, numericLabel.getNumber(), 0.0001);
+        assertEquals("1,111,111,111,111,111", numericLabel.getNumberText());
+    }
+
+    @Test
+    public void shouldNotStartDecimalMax() throws Exception
+    {
+        for(int i = 0; i < MAX_LENGTH + 1; i++)
+        {
+            numericLabel.append(1);
+        }
+        numericLabel.startDecimal();
+
+        when(numberConverter.convert(1111111111111111D, 0)).thenReturn("1,111,111,111,111,111");
+
+        assertEquals(1111111111111111D, numericLabel.getNumber(), 0.0001);
+        assertEquals("1,111,111,111,111,111", numericLabel.getNumberText());
+    }
+
+    @Test
+    public void shouldAddDecimalMax() throws Exception
+    {
+        numericLabel.startDecimal();
+        for(int i = 0; i < MAX_LENGTH + 1; i++)
+        {
+            numericLabel.append(1);
+        }
+
+        when(numberConverter.convert(eq(0.111111111111111D, 0.0000000000000001D), eq(16))).thenReturn("0.111111111111111");
+
+        assertEquals(0.111111111111111D, numericLabel.getNumber(), 0.0000000000000001D);
+        assertEquals("0.111111111111111", numericLabel.getNumberText());
+    }
 }

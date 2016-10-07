@@ -5,6 +5,8 @@ import org.apache.pivot.wtk.Label;
 
 public class NumericLabel
 {
+    public static final int MAX_LENGTH = 16;
+
     private final NumberConverter numberConverter;
     private final Label label;
 
@@ -30,6 +32,11 @@ public class NumericLabel
 
     public void append(int digit)
     {
+        if(!canAdd())
+        {
+            return;
+        }
+
         if(number == null)
         {
             this.number = (double) digit;
@@ -88,7 +95,7 @@ public class NumericLabel
 
     public void startDecimal()
     {
-        if(decimal == 0)
+        if(decimal == 0 && canAdd())
         {
             decimal = 1;
             setText();
@@ -98,5 +105,15 @@ public class NumericLabel
     private void setText()
     {
         label.setText(getNumberText());
+    }
+
+    private boolean canAdd()
+    {
+        return getLength() < MAX_LENGTH;
+    }
+
+    private int getLength()
+    {
+        return String.valueOf(Math.round(number)).length() + Math.max(0, decimal - 1);
     }
 }
