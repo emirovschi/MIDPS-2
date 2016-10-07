@@ -12,7 +12,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import static org.mockito.Matchers.anyDouble;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -100,6 +102,30 @@ public class MainWindowTest
         button.press();
 
         verify(calculator).push(number);
+        verify(calculator).push(operator);
+        verify(numericLabel).clear();
+        verify(currentOperation).setText(text);
+    }
+
+    @Test
+    public void shouldRegisterOperatorButtonWithZeroValue() throws Exception
+    {
+        final String text = "text";
+
+        final Operator operator = mock(Operator.class);
+        final Operation operation = mock(Operation.class);
+
+        final OperatorButton button = new OperatorButton();
+        button.setOperator(operator);
+
+        when(numericLabel.getNumber()).thenReturn(0D);
+        when(calculator.getOperation()).thenReturn(operation);
+        when(operation.toString(numberConverter)).thenReturn(text);
+
+        mainWindow.register(button);
+        button.press();
+
+        verify(calculator, never()).push(anyDouble());
         verify(calculator).push(operator);
         verify(numericLabel).clear();
         verify(currentOperation).setText(text);

@@ -64,7 +64,10 @@ public class MainWindow extends Window implements Bindable, ButtonRegister
 
     private void pushOperator(final Operator operator)
     {
-        calculator.push(numericLabel.getNumber());
+        if (Math.abs(numericLabel.getNumber()) >= 1E-16)
+        {
+            calculator.push(numericLabel.getNumber());
+        }
         calculator.push(operator);
         numericLabel.clear();
         currentOperation.setText(calculator.getOperation().toString(numberConverter));
