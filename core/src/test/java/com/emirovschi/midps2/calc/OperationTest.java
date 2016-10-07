@@ -5,7 +5,9 @@ import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.anyDouble;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -102,6 +104,31 @@ public class OperationTest
         assertNotEquals(new Operation(left, operator, right), new Operation(left));
         assertNotEquals(new Operation(left, operator, right), new Operation(left, operator));
         assertNotEquals(new Operation(left, operator, right), new Operation(left, operator, right + 1));
+    }
+
+    @Test
+    public void canPushLeft()
+    {
+        final double left = 10D;
+
+        assertFalse(new Operation(left).canPushRight());
+    }
+
+    @Test
+    public void canPushLeftAndOperator()
+    {
+        final double left = 10D;
+
+        assertTrue(new Operation(left, operator).canPushRight());
+    }
+
+    @Test
+    public void canPushLeftAndOperatorAndRight()
+    {
+        final double left = 10D;
+        final double right = 5D;
+
+        assertFalse(new Operation(left, operator, right).canPushRight());
     }
 
 }

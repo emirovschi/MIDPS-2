@@ -42,6 +42,11 @@ public class Operation
         this.right = right;
     }
 
+    public boolean canPushRight()
+    {
+        return operator != null && right == null;
+    }
+
     public String toString(final NumberConverter numberConverter)
     {
         if (left == null)

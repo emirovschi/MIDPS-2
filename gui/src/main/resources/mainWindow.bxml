@@ -55,7 +55,7 @@
             <controls:InputButton digit="0" register="$mainWindow" styles="{font:{size:30, bold:true}}"/>
             <PushButton buttonData="+/-" styles="{font:{size:30, bold:true}}"/>
             <controls:ClearButton buttonData="C" register="$mainWindow" styles="{font:{size:30, bold:true}}"/>
-            <PushButton buttonData="=" styles="{font:{size:30, bold:true}}"/>
+            <controls:EqualsButton buttonData="=" register="$mainWindow" styles="{font:{size:30, bold:true}}"/>
         </TablePane.Row>
     </TablePane>
 </controls:MainWindow>

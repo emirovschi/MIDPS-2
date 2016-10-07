@@ -46,12 +46,13 @@ public class MainWindow extends Window implements Bindable, ButtonRegister
                 .when(DecimalButton.class).then(addListener(b -> numericLabel.startDecimal()))
                 .when(ClearButton.class).then(addListener(b -> clearCalculator()))
                 .when(OperatorButton.class).then(addListener(b -> pushOperator(b.getOperator())))
+                .when(EqualsButton.class).then(addListener(b -> calculate()))
                 .match();
     }
 
     private <T extends Button> Consumer<T> addListener(final Consumer<T> consumer)
     {
-        return button -> button.getButtonPressListeners().add(b -> consumer.accept((T) b));
+        return button -> button.getButtonPressListeners().add(b -> consumer.accept(button));
     }
 
     private void clearCalculator()
@@ -67,6 +68,17 @@ public class MainWindow extends Window implements Bindable, ButtonRegister
         calculator.push(operator);
         numericLabel.clear();
         currentOperation.setText(calculator.getOperation().toString(numberConverter));
+    }
+
+    private void calculate()
+    {
+        if(calculator.getOperation().canPushRight())
+        {
+            final double result = calculator.push(numericLabel.getNumber());
+            numericLabel.clear();
+            currentValue.setText(numberConverter.convert(result));
+            currentOperation.setText(calculator.getOperation().toString(numberConverter));
+        }
     }
 
     public void setNumberConverter(final NumberConverter numberConverter)

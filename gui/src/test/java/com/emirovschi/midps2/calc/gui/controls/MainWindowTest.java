@@ -89,7 +89,6 @@ public class MainWindowTest
         final Operator operator = mock(Operator.class);
         final Operation operation = mock(Operation.class);
 
-
         final OperatorButton button = new OperatorButton();
         button.setOperator(operator);
 
@@ -103,6 +102,34 @@ public class MainWindowTest
         verify(calculator).push(number);
         verify(calculator).push(operator);
         verify(numericLabel).clear();
+        verify(currentOperation).setText(text);
+    }
+
+    @Test
+    public void shouldRegisterEqualsButton() throws Exception
+    {
+        final double number = 100;
+        final double result = 200;
+        final String text = "text";
+        final String resultText = "resultText";
+
+        final Operation operation = mock(Operation.class);
+
+        final EqualsButton button = new EqualsButton();
+
+        when(numericLabel.getNumber()).thenReturn(number);
+        when(calculator.push(number)).thenReturn(result);
+        when(calculator.getOperation()).thenReturn(operation);
+        when(operation.canPushRight()).thenReturn(true);
+        when(numberConverter.convert(result)).thenReturn(resultText);
+        when(operation.toString(numberConverter)).thenReturn(text);
+
+        mainWindow.register(button);
+        button.press();
+
+        verify(calculator).push(number);
+        verify(numericLabel).clear();
+        verify(currentValue).setText(resultText);
         verify(currentOperation).setText(text);
     }
 }
