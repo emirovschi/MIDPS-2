@@ -77,12 +77,8 @@ public class NumericLabel
         {
             return "";
         }
-        else if(decimal == 1)
-        {
-            return numberConverter.convert(number) + ".";
-        }
 
-        return numberConverter.convert(number);
+        return numberConverter.convert(number, decimal);
     }
 
     public double getNumber()

@@ -7,6 +7,8 @@ import org.junit.Test;
 import org.mockito.InOrder;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.AdditionalMatchers.eq;
+import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -25,11 +27,15 @@ public class NumericLabelTest
 
         numericLabel = new NumericLabel(numberConverter, label);
 
-        when(numberConverter.convert(0D)).thenReturn("0");
-        when(numberConverter.convert(1D)).thenReturn("1");
-        when(numberConverter.convert(12D)).thenReturn("12");
-        when(numberConverter.convert(12.3D)).thenReturn("12.3");
-        when(numberConverter.convert(12.34D)).thenReturn("12.34");
+        when(numberConverter.convert(0D, 0)).thenReturn("0");
+        when(numberConverter.convert(1D, 0)).thenReturn("1");
+        when(numberConverter.convert(12D, 0)).thenReturn("12");
+        when(numberConverter.convert(12D, 1)).thenReturn("12.");
+        when(numberConverter.convert(12.3D, 2)).thenReturn("12.3");
+        when(numberConverter.convert(12.34D, 3)).thenReturn("12.34");
+        when(numberConverter.convert(12D, 2)).thenReturn("12.0");
+        when(numberConverter.convert(12.03D, 3)).thenReturn("12.03");
+        when(numberConverter.convert(eq(12.034D, 0.00001), eq(4))).thenReturn("12.034");
     }
 
     @Test
@@ -39,9 +45,9 @@ public class NumericLabelTest
         numericLabel.append(2);
 
         final InOrder order = inOrder(numberConverter, label);
-        order.verify(numberConverter).convert(1D);
+        order.verify(numberConverter).convert(1D, 0);
         order.verify(label).setText("1");
-        order.verify(numberConverter).convert(12D);
+        order.verify(numberConverter).convert(12D, 0);
         order.verify(label).setText("12");
 
         assertEquals(12, numericLabel.getNumber(), 0.0001);
@@ -56,11 +62,11 @@ public class NumericLabelTest
         numericLabel.startDecimal();
 
         final InOrder order = inOrder(numberConverter, label);
-        order.verify(numberConverter).convert(1D);
+        order.verify(numberConverter).convert(1D, 0);
         order.verify(label).setText("1");
-        order.verify(numberConverter).convert(12D);
+        order.verify(numberConverter).convert(12D, 0);
         order.verify(label).setText("12");
-        order.verify(numberConverter).convert(12D);
+        order.verify(numberConverter).convert(12D, 1);
         order.verify(label).setText("12.");
 
         assertEquals(12, numericLabel.getNumber(), 0.0001);
@@ -77,19 +83,47 @@ public class NumericLabelTest
         numericLabel.append(4);
 
         final InOrder order = inOrder(numberConverter, label);
-        order.verify(numberConverter).convert(1D);
+        order.verify(numberConverter).convert(1D, 0);
         order.verify(label).setText("1");
-        order.verify(numberConverter).convert(12D);
+        order.verify(numberConverter).convert(12D, 0);
         order.verify(label).setText("12");
-        order.verify(numberConverter).convert(12D);
+        order.verify(numberConverter).convert(12D, 1);
         order.verify(label).setText("12.");
-        order.verify(numberConverter).convert(12.3D);
+        order.verify(numberConverter).convert(12.3D, 2);
         order.verify(label).setText("12.3");
-        order.verify(numberConverter).convert(12.34D);
+        order.verify(numberConverter).convert(12.34D, 3);
         order.verify(label).setText("12.34");
 
         assertEquals(12.34, numericLabel.getNumber(), 0.0001);
         assertEquals("12.34", numericLabel.getNumberText());
+    }
+
+    @Test
+    public void shouldAddZeroDecimal() throws Exception
+    {
+        numericLabel.append(1);
+        numericLabel.append(2);
+        numericLabel.startDecimal();
+        numericLabel.append(0);
+        numericLabel.append(3);
+        numericLabel.append(4);
+
+        final InOrder order = inOrder(numberConverter, label);
+        order.verify(numberConverter).convert(1D, 0);
+        order.verify(label).setText("1");
+        order.verify(numberConverter).convert(12D, 0);
+        order.verify(label).setText("12");
+        order.verify(numberConverter).convert(12D, 1);
+        order.verify(label).setText("12.");
+        order.verify(numberConverter).convert(12D, 2);
+        order.verify(label).setText("12.0");
+        order.verify(numberConverter).convert(12.03D, 3);
+        order.verify(label).setText("12.03");
+        order.verify(numberConverter).convert(eq(12.034D, 0.00001), eq(4));
+        order.verify(label).setText("12.034");
+
+        assertEquals(12.034, numericLabel.getNumber(), 0.0001);
+        assertEquals("12.034", numericLabel.getNumberText());
     }
 
     @Test
@@ -100,11 +134,11 @@ public class NumericLabelTest
         numericLabel.delete();
 
         final InOrder order = inOrder(numberConverter, label);
-        order.verify(numberConverter).convert(1D);
+        order.verify(numberConverter).convert(1D, 0);
         order.verify(label).setText("1");
-        order.verify(numberConverter).convert(12D);
+        order.verify(numberConverter).convert(12D, 0);
         order.verify(label).setText("12");
-        order.verify(numberConverter).convert(1D);
+        order.verify(numberConverter).convert(1D, 0);
         order.verify(label).setText("1");
 
         assertEquals(1, numericLabel.getNumber(), 0.0001);
@@ -120,13 +154,13 @@ public class NumericLabelTest
         numericLabel.delete();
 
         final InOrder order = inOrder(numberConverter, label);
-        order.verify(numberConverter).convert(1D);
+        order.verify(numberConverter).convert(1D, 0);
         order.verify(label).setText("1");
-        order.verify(numberConverter).convert(12D);
+        order.verify(numberConverter).convert(12D, 0);
         order.verify(label).setText("12");
-        order.verify(numberConverter).convert(12D);
+        order.verify(numberConverter).convert(12D, 1);
         order.verify(label).setText("12.");
-        order.verify(numberConverter).convert(12D);
+        order.verify(numberConverter).convert(12D, 0);
         order.verify(label).setText("12");
 
         assertEquals(12, numericLabel.getNumber(), 0.0001);
@@ -144,17 +178,17 @@ public class NumericLabelTest
         numericLabel.delete();
 
         final InOrder order = inOrder(numberConverter, label);
-        order.verify(numberConverter).convert(1D);
+        order.verify(numberConverter).convert(1D, 0);
         order.verify(label).setText("1");
-        order.verify(numberConverter).convert(12D);
+        order.verify(numberConverter).convert(12D, 0);
         order.verify(label).setText("12");
-        order.verify(numberConverter).convert(12D);
+        order.verify(numberConverter).convert(12D, 1);
         order.verify(label).setText("12.");
-        order.verify(numberConverter).convert(12.3D);
+        order.verify(numberConverter).convert(12.3D, 2);
         order.verify(label).setText("12.3");
-        order.verify(numberConverter).convert(12.34D);
+        order.verify(numberConverter).convert(12.34D, 3);
         order.verify(label).setText("12.34");
-        order.verify(numberConverter).convert(12.3D);
+        order.verify(numberConverter).convert(12.3D, 2);
         order.verify(label).setText("12.3");
 
         assertEquals(12.3, numericLabel.getNumber(), 0.0001);
@@ -172,17 +206,17 @@ public class NumericLabelTest
         numericLabel.clear();
 
         final InOrder order = inOrder(numberConverter, label);
-        order.verify(numberConverter).convert(1D);
+        order.verify(numberConverter).convert(1D, 0);
         order.verify(label).setText("1");
-        order.verify(numberConverter).convert(12D);
+        order.verify(numberConverter).convert(12D, 0);
         order.verify(label).setText("12");
-        order.verify(numberConverter).convert(12D);
+        order.verify(numberConverter).convert(12D, 1);
         order.verify(label).setText("12.");
-        order.verify(numberConverter).convert(12.3D);
+        order.verify(numberConverter).convert(12.3D, 2);
         order.verify(label).setText("12.3");
-        order.verify(numberConverter).convert(12.34D);
+        order.verify(numberConverter).convert(12.34D, 3);
         order.verify(label).setText("12.34");
-        order.verify(numberConverter).convert(0D);
+        order.verify(numberConverter).convert(0D, 0);
         order.verify(label).setText("0");
 
         assertEquals(0, numericLabel.getNumber(), 0.0001);
