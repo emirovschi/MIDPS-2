@@ -6,8 +6,8 @@ import org.apache.pivot.wtk.PushButton;
 @SuppressWarnings("unchecked")
 public abstract class RegisteredPushButton extends PushButton
 {
-    public <T extends PushButton> void setRegister(final ButtonRegister<T> register)
+    public void setRegister(final ButtonRegister register)
     {
-        register.register((T) this);
+        register.register(this);
     }
 }

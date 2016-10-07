@@ -11,7 +11,7 @@ public class RegisteredPushButtonTest
     @Test
     public void shouldRegisterItSelf() throws Exception
     {
-        final ButtonRegister<RegisteredPushButton> register = mock(ButtonRegister.class);
+        final ButtonRegister register = mock(ButtonRegister.class);
         final RegisteredPushButton button = new RegisteredPushButton() {};
 
         button.setRegister(register);

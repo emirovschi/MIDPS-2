@@ -1,13 +1,9 @@
 package com.emirovschi.midps2.calc.gui.controls;
 
-import org.apache.pivot.util.ListenerList;
-import org.apache.pivot.wtk.ButtonPressListener;
 import org.junit.Test;
-import org.mockito.ArgumentCaptor;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 public class MainWindowTest
 {
@@ -17,21 +13,14 @@ public class MainWindowTest
     public void shouldRegisterInputButton() throws Exception
     {
         final int digit = 1;
-        final InputButton button = mock(InputButton.class);
-        final ListenerList<ButtonPressListener> listeners = mock(ListenerList.class);
-        final ArgumentCaptor<ButtonPressListener> listener = ArgumentCaptor.forClass(ButtonPressListener.class);
+        final InputButton button = new InputButton();
         final NumericLabel numericLabel = mock(NumericLabel.class);
 
         mainWindow.setNumericLabel(numericLabel);
-
-        when(button.getDigit()).thenReturn(digit);
-        when(button.getButtonPressListeners()).thenReturn(listeners);
+        button.setDigit(digit);
 
         mainWindow.register(button);
-
-        verify(listeners).add(listener.capture());
-
-        listener.getValue().buttonPressed(button);
+        button.press();
 
         verify(numericLabel).append(digit);
     }
