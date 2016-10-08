@@ -20,9 +20,11 @@ public class KeyListenerTest
     {
         button1 = mock(RegisteredPushButton.class);
         when(button1.getKeys()).thenReturn(Sets.newSet('+','\n'));
+        when(button1.isEnabled()).thenReturn(true);
 
         button2 = mock(RegisteredPushButton.class);
         when(button2.getKeys()).thenReturn(Sets.newSet('-','\n'));
+        when(button2.isEnabled()).thenReturn(true);
 
         keyListener = new KeyListener();
         keyListener.bind(button1);
@@ -60,6 +62,19 @@ public class KeyListenerTest
     public void shouldPressNone() throws Exception
     {
         keyListener.keyTyped(null, '*');
+
+        verify(button1, never()).press();
+        verify(button2, never()).press();
+    }
+
+    @Test
+    public void shouldNotPressDisabled() throws Exception
+    {
+        when(button1.isEnabled()).thenReturn(false);
+        when(button2.isEnabled()).thenReturn(false);
+
+        keyListener.keyTyped(null, '+');
+        keyListener.keyTyped(null, '-');
 
         verify(button1, never()).press();
         verify(button2, never()).press();

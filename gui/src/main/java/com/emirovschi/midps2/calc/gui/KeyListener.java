@@ -27,7 +27,7 @@ public class KeyListener extends ComponentKeyListener.Adapter
     @Override
     public boolean keyTyped(final Component component, final char c)
     {
-        Optional.ofNullable(keyBinding.get(c)).ifPresent(Button::press);
+        Optional.ofNullable(keyBinding.get(c)).filter(Button::isEnabled).ifPresent(Button::press);
         return false;
     }
 }
