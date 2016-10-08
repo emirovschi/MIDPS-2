@@ -3,10 +3,10 @@ package com.emirovschi.midps2.calc.gui.controls;
 import com.emirovschi.midps2.calc.Calculator;
 import com.emirovschi.midps2.calc.Operation;
 import com.emirovschi.midps2.calc.converters.NumberConverter;
+import com.emirovschi.midps2.calc.gui.KeyListener;
 import com.emirovschi.midps2.calc.operators.MultiplyOperator;
 import com.emirovschi.midps2.calc.operators.Operator;
 import org.apache.pivot.wtk.Label;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -40,11 +40,6 @@ public class MainWindowTest
 
     @InjectMocks
     private MainWindow mainWindow = new MainWindow();
-
-    @Before
-    public void setUp()
-    {
-    }
 
     @Test
     public void shouldRegisterInputButton() throws Exception
@@ -164,10 +159,6 @@ public class MainWindowTest
     @Test
     public void shouldRegisterChangeSignButtonToChangeNumericValue() throws Exception
     {
-        final double number = 100;
-        final String text = "text";
-        final String resultText = "resultText";
-
         final Operation operation = mock(Operation.class);
 
         final ChangeSignButton button = new ChangeSignButton();
@@ -207,5 +198,17 @@ public class MainWindowTest
         verify(numericLabel).clear();
         verify(currentValue).setText(resultText);
         verify(currentOperation).setText(text);
+    }
+
+    @Test
+    public void shouldAddKeyBinding() throws Exception
+    {
+        final RegisteredPushButton button = mock(RegisteredPushButton.class);
+        final KeyListener keyListener = mock(KeyListener.class);
+
+        mainWindow.setKeyListener(keyListener);
+        mainWindow.register(button);
+
+        verify(keyListener).bind(button);
     }
 }

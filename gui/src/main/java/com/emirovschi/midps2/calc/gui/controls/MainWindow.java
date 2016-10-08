@@ -5,6 +5,7 @@ import com.emirovschi.midps2.calc.SimpleCalculator;
 import com.emirovschi.midps2.calc.converters.DecimalNumberConverter;
 import com.emirovschi.midps2.calc.converters.NumberConverter;
 import com.emirovschi.midps2.calc.gui.ButtonRegister;
+import com.emirovschi.midps2.calc.gui.KeyListener;
 import com.emirovschi.midps2.calc.matcher.Matcher;
 import com.emirovschi.midps2.calc.operators.MultiplyOperator;
 import com.emirovschi.midps2.calc.operators.Operator;
@@ -19,12 +20,14 @@ import org.apache.pivot.wtk.Window;
 
 import java.net.URL;
 import java.util.function.Consumer;
+import java.util.stream.Stream;
 
 public class MainWindow extends Window implements Bindable, ButtonRegister
 {
     private NumberConverter numberConverter;
     private NumericLabel numericLabel;
     private Calculator calculator;
+    private KeyListener keyListener = new KeyListener();
 
     @BXML
     private Label currentOperation;
@@ -38,10 +41,17 @@ public class MainWindow extends Window implements Bindable, ButtonRegister
         numberConverter = new DecimalNumberConverter();
         numericLabel = new NumericLabel(numberConverter, currentValue);
         calculator = new SimpleCalculator();
+        getComponentKeyListeners().add(keyListener);
     }
 
     @Override
     public void register(final Button button)
+    {
+        addListener(button);
+        addKeyBinding(button);
+    }
+
+    private void addListener(final Button button)
     {
         Matcher.of(button)
                 .when(InputButton.class).then(addListener(b -> numericLabel.append(b.getDigit())))
@@ -56,6 +66,14 @@ public class MainWindow extends Window implements Bindable, ButtonRegister
     private <T extends Button> Consumer<T> addListener(final Consumer<T> consumer)
     {
         return button -> button.getButtonPressListeners().add(b -> consumer.accept(button));
+    }
+
+    private void addKeyBinding(final Button button)
+    {
+        Stream.of(button)
+                .filter(b -> b instanceof RegisteredPushButton)
+                .map(b -> (RegisteredPushButton) b)
+                .forEach(keyListener::bind);
     }
 
     private void clearCalculator()
@@ -116,6 +134,11 @@ public class MainWindow extends Window implements Bindable, ButtonRegister
     public void setCalculator(final Calculator calculator)
     {
         this.calculator = calculator;
+    }
+
+    public void setKeyListener(final KeyListener keyListener)
+    {
+        this.keyListener = keyListener;
     }
 
     @Override
