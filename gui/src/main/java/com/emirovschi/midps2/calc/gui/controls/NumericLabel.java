@@ -90,6 +90,11 @@ public class NumericLabel
 
     public double getNumber()
     {
+        if (decimal > 1)
+        {
+            final double pow = Math.pow(10, decimal - 1);
+            return Math.round(number * pow) / pow;
+        }
         return number;
     }
 

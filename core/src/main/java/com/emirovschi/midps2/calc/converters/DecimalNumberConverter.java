@@ -54,7 +54,13 @@ public class DecimalNumberConverter implements NumberConverter
     @Override
     public String convert(final double number)
     {
-        return Math.abs(number) < SCIENTIFIC_MIN ? defaultFormat.format(number) : scientificDecimalFormat.format(number);
+        return Math.abs(number) < SCIENTIFIC_MIN ? defaultFormat.format(round(number)) : scientificDecimalFormat.format(number);
+    }
+
+    private double round(final double number)
+    {
+        final long integer = Math.round(number);
+        return integer + (Math.round((number - integer) * 1E15) / 1E15);
     }
 
     @Override
