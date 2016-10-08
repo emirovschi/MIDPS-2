@@ -23,6 +23,7 @@ public class DefaultGraphicCalculator implements GraphicCalculator
     public void push(final int digit)
     {
         numericLabel.append(digit);
+        reportRestore();
     }
 
     @Override
@@ -30,7 +31,11 @@ public class DefaultGraphicCalculator implements GraphicCalculator
     {
         if (Math.abs(numericLabel.getNumber()) >= 1E-16)
         {
-            calculator.push(numericLabel.getNumber());
+            final double result = calculator.push(numericLabel.getNumber());
+            if(checkError(result))
+            {
+                return;
+            }
         }
         calculator.push(operator);
         numericLabel.clear();
@@ -49,6 +54,10 @@ public class DefaultGraphicCalculator implements GraphicCalculator
         if(calculator.getOperation().canPushRight())
         {
             final double result = calculator.push(numericLabel.getNumber());
+            if(checkError(result))
+            {
+                return;
+            }
             numericLabel.clear();
             currentValue.setText(numberConverter.convert(result));
             currentOperation.setText(calculator.getOperation().toString(numberConverter));
@@ -61,6 +70,7 @@ public class DefaultGraphicCalculator implements GraphicCalculator
         numericLabel.clear();
         calculator.clear();
         currentOperation.setText("");
+        reportRestore();
     }
 
     @Override
@@ -85,6 +95,36 @@ public class DefaultGraphicCalculator implements GraphicCalculator
     {
         errorHandlers.add(handler);
     }
+
+    private boolean hasError(final double number)
+    {
+        return Double.isInfinite(number) || Double.isNaN(number);
+    }
+
+    private boolean checkError(final double number)
+    {
+        if(hasError(number))
+        {
+            numericLabel.clear();
+            currentOperation.setText(calculator.getOperation().toString(numberConverter));
+            currentValue.setText(numberConverter.convert(number));
+            calculator.clear();
+            reportError();
+            return true;
+        }
+        return false;
+    }
+
+    private void reportError()
+    {
+        errorHandlers.forEach(CalculatorErrorHandler::onError);
+    }
+
+    private void reportRestore()
+    {
+        errorHandlers.forEach(CalculatorErrorHandler::onRestore);
+    }
+
     public void setNumberConverter(final NumberConverter numberConverter)
     {
         this.numberConverter = numberConverter;

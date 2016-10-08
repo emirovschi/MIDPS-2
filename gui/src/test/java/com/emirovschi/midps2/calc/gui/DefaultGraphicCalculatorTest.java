@@ -45,10 +45,13 @@ public class DefaultGraphicCalculatorTest
     public void shouldPushDigit() throws Exception
     {
         final int digit = 1;
+        final CalculatorErrorHandler errorHandler = mock(CalculatorErrorHandler.class);
 
+        graphicCalculator.addErrorHandler(errorHandler);
         graphicCalculator.push(digit);
 
         verify(numericLabel).append(digit);
+        verify(errorHandler).onRestore();
     }
 
     @Test
@@ -128,11 +131,15 @@ public class DefaultGraphicCalculatorTest
     @Test
     public void shouldClear() throws Exception
     {
+        final CalculatorErrorHandler errorHandler = mock(CalculatorErrorHandler.class);
+
+        graphicCalculator.addErrorHandler(errorHandler);
         graphicCalculator.clear();
 
         verify(numericLabel).clear();
         verify(calculator).clear();
         verify(currentOperation).setText("");
+        verify(errorHandler).onRestore();
     }
 
     @Test
@@ -173,4 +180,64 @@ public class DefaultGraphicCalculatorTest
         verify(currentOperation).setText(text);
     }
 
+    @Test
+    public void shouldReportErrorOnPushOperator() throws Exception
+    {
+        final double number = 100;
+        final double result = Double.POSITIVE_INFINITY;
+        final String operationText = "operation";
+        final String valueText = "value";
+
+        final Operator operator = mock(Operator.class);
+        final Operation operation = mock(Operation.class);
+        final CalculatorErrorHandler errorHandler = mock(CalculatorErrorHandler.class);
+
+        when(numericLabel.getNumber()).thenReturn(number);
+        when(calculator.push(number)).thenReturn(result);
+        when(calculator.getOperation()).thenReturn(operation);
+        when(operation.toString(numberConverter)).thenReturn(operationText);
+        when(numberConverter.convert(result)).thenReturn(valueText);
+
+        graphicCalculator.addErrorHandler(errorHandler);
+        graphicCalculator.push(operator);
+
+        verify(calculator).push(number);
+        verify(calculator, never()).push(operator);
+
+        verify(numericLabel).clear();
+        verify(currentOperation).setText(operationText);
+        verify(currentValue).setText(valueText);
+        verify(calculator).clear();
+        verify(errorHandler).onError();
+    }
+
+    @Test
+    public void shouldReportErrorOnCalculate() throws Exception
+    {
+        final double number = 100;
+        final double result = Double.POSITIVE_INFINITY;
+        final String text = "text";
+        final String resultText = "resultText";
+
+        final Operation operation = mock(Operation.class);
+        final CalculatorErrorHandler errorHandler = mock(CalculatorErrorHandler.class);
+
+        when(numericLabel.getNumber()).thenReturn(number);
+        when(calculator.push(number)).thenReturn(result);
+        when(calculator.getOperation()).thenReturn(operation);
+        when(operation.canPushRight()).thenReturn(true);
+        when(numberConverter.convert(result)).thenReturn(resultText);
+        when(operation.toString(numberConverter)).thenReturn(text);
+
+        graphicCalculator.addErrorHandler(errorHandler);
+        graphicCalculator.calculate();
+
+        verify(calculator).push(number);
+
+        verify(numericLabel).clear();
+        verify(currentValue).setText(resultText);
+        verify(currentOperation).setText(text);
+        verify(calculator).clear();
+        verify(errorHandler).onError();
+    }
 }
