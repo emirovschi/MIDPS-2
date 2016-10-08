@@ -11,6 +11,7 @@ import java.util.stream.Stream;
 public abstract class RegisteredPushButton extends PushButton
 {
     private Set<Character> keys = Collections.emptySet();
+    private boolean disableOnError;
 
     public void setRegister(final ButtonRegister register)
     {
@@ -38,5 +39,15 @@ public abstract class RegisteredPushButton extends PushButton
         }
 
         return key.charAt(0);
+    }
+
+    public boolean isDisableOnError()
+    {
+        return disableOnError;
+    }
+
+    public void setDisableOnError(final boolean disableOnError)
+    {
+        this.disableOnError = disableOnError;
     }
 }
