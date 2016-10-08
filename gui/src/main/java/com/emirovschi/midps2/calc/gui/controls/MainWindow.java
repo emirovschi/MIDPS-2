@@ -13,6 +13,7 @@ import org.apache.pivot.beans.Bindable;
 import org.apache.pivot.collections.Map;
 import org.apache.pivot.util.Resources;
 import org.apache.pivot.wtk.Button;
+import org.apache.pivot.wtk.Keyboard;
 import org.apache.pivot.wtk.Label;
 import org.apache.pivot.wtk.Window;
 
@@ -115,5 +116,23 @@ public class MainWindow extends Window implements Bindable, ButtonRegister
     public void setCalculator(final Calculator calculator)
     {
         this.calculator = calculator;
+    }
+
+    @Override
+    public boolean keyTyped(char character)
+    {
+        return super.keyTyped(character);
+    }
+
+    @Override
+    public boolean keyPressed(int keyCode, Keyboard.KeyLocation keyLocation)
+    {
+        return super.keyPressed(keyCode, keyLocation);
+    }
+
+    @Override
+    public boolean keyReleased(int keyCode, Keyboard.KeyLocation keyLocation)
+    {
+        return super.keyReleased(keyCode, keyLocation);
     }
 }
