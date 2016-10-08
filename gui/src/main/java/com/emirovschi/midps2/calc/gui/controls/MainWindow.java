@@ -1,14 +1,13 @@
 package com.emirovschi.midps2.calc.gui.controls;
 
-import com.emirovschi.midps2.calc.Calculator;
 import com.emirovschi.midps2.calc.SimpleCalculator;
 import com.emirovschi.midps2.calc.converters.DecimalNumberConverter;
 import com.emirovschi.midps2.calc.converters.NumberConverter;
 import com.emirovschi.midps2.calc.gui.ButtonRegister;
+import com.emirovschi.midps2.calc.gui.DefaultGraphicCalculator;
+import com.emirovschi.midps2.calc.gui.GraphicCalculator;
 import com.emirovschi.midps2.calc.gui.KeyListener;
 import com.emirovschi.midps2.calc.matcher.Matcher;
-import com.emirovschi.midps2.calc.operators.MultiplyOperator;
-import com.emirovschi.midps2.calc.operators.Operator;
 import org.apache.pivot.beans.BXML;
 import org.apache.pivot.beans.Bindable;
 import org.apache.pivot.collections.Map;
@@ -24,10 +23,8 @@ import java.util.stream.Stream;
 
 public class MainWindow extends Window implements Bindable, ButtonRegister
 {
-    private NumberConverter numberConverter;
-    private NumericLabel numericLabel;
-    private Calculator calculator;
-    private KeyListener keyListener = new KeyListener();
+    private KeyListener keyListener;
+    private GraphicCalculator graphicCalculator;
 
     @BXML
     private Label currentOperation;
@@ -35,13 +32,25 @@ public class MainWindow extends Window implements Bindable, ButtonRegister
     @BXML
     private Label currentValue;
 
+    public MainWindow()
+    {
+        keyListener = new KeyListener();
+        getComponentKeyListeners().add(keyListener);
+    }
+
     @Override
     public void initialize(final Map<String, Object> map, final URL url, final Resources resources)
     {
-        numberConverter = new DecimalNumberConverter();
-        numericLabel = new NumericLabel(numberConverter, currentValue);
-        calculator = new SimpleCalculator();
-        getComponentKeyListeners().add(keyListener);
+        final NumberConverter numberConverter = new DecimalNumberConverter();
+
+        final DefaultGraphicCalculator graphicCalculator = new DefaultGraphicCalculator();
+        graphicCalculator.setNumberConverter(numberConverter);
+        graphicCalculator.setNumericLabel(new NumericLabel(numberConverter, currentValue));
+        graphicCalculator.setCalculator(new SimpleCalculator());
+        graphicCalculator.setCurrentOperation(currentOperation);
+        graphicCalculator.setCurrentValue(currentValue);
+
+        setGraphicCalculator(graphicCalculator);
     }
 
     @Override
@@ -54,12 +63,12 @@ public class MainWindow extends Window implements Bindable, ButtonRegister
     private void addListener(final Button button)
     {
         Matcher.of(button)
-                .when(InputButton.class).then(addListener(b -> numericLabel.append(b.getDigit())))
-                .when(DecimalButton.class).then(addListener(b -> numericLabel.startDecimal()))
-                .when(ClearButton.class).then(addListener(b -> clearCalculator()))
-                .when(OperatorButton.class).then(addListener(b -> pushOperator(b.getOperator())))
-                .when(EqualsButton.class).then(addListener(b -> calculate()))
-                .when(ChangeSignButton.class).then(addListener(b -> changeSign()))
+                .when(InputButton.class).then(addListener(b -> graphicCalculator.push(b.getDigit())))
+                .when(DecimalButton.class).then(addListener(b -> graphicCalculator.startDecimal()))
+                .when(ClearButton.class).then(addListener(b -> graphicCalculator.clear()))
+                .when(OperatorButton.class).then(addListener(b -> graphicCalculator.push(b.getOperator())))
+                .when(EqualsButton.class).then(addListener(b -> graphicCalculator.calculate()))
+                .when(ChangeSignButton.class).then(addListener(b -> graphicCalculator.changeSign()))
                 .match();
     }
 
@@ -74,71 +83,6 @@ public class MainWindow extends Window implements Bindable, ButtonRegister
                 .filter(b -> b instanceof RegisteredPushButton)
                 .map(b -> (RegisteredPushButton) b)
                 .forEach(keyListener::bind);
-    }
-
-    private void clearCalculator()
-    {
-        numericLabel.clear();
-        calculator.clear();
-        currentOperation.setText("");
-    }
-
-    private void pushOperator(final Operator operator)
-    {
-        if (Math.abs(numericLabel.getNumber()) >= 1E-16)
-        {
-            calculator.push(numericLabel.getNumber());
-        }
-        calculator.push(operator);
-        numericLabel.clear();
-        currentOperation.setText(calculator.getOperation().toString(numberConverter));
-    }
-
-    private void calculate()
-    {
-        if(calculator.getOperation().canPushRight())
-        {
-            final double result = calculator.push(numericLabel.getNumber());
-            numericLabel.clear();
-            currentValue.setText(numberConverter.convert(result));
-            currentOperation.setText(calculator.getOperation().toString(numberConverter));
-        }
-    }
-
-    private void changeSign()
-    {
-        if (calculator.getOperation().isEmpty() || calculator.getOperation().canPushRight())
-        {
-            numericLabel.changeSign();
-        }
-        else
-        {
-            calculator.push(new MultiplyOperator());
-            final double result = calculator.push(-1);
-            numericLabel.clear();
-            currentValue.setText(numberConverter.convert(result));
-            currentOperation.setText(calculator.getOperation().toString(numberConverter));
-        }
-    }
-
-    public void setNumberConverter(final NumberConverter numberConverter)
-    {
-        this.numberConverter = numberConverter;
-    }
-
-    public void setNumericLabel(final NumericLabel numericLabel)
-    {
-        this.numericLabel = numericLabel;
-    }
-
-    public void setCalculator(final Calculator calculator)
-    {
-        this.calculator = calculator;
-    }
-
-    public void setKeyListener(final KeyListener keyListener)
-    {
-        this.keyListener = keyListener;
     }
 
     @Override
@@ -157,5 +101,15 @@ public class MainWindow extends Window implements Bindable, ButtonRegister
     public boolean keyReleased(int keyCode, Keyboard.KeyLocation keyLocation)
     {
         return super.keyReleased(keyCode, keyLocation);
+    }
+
+    public void setKeyListener(final KeyListener keyListener)
+    {
+        this.keyListener = keyListener;
+    }
+
+    public void setGraphicCalculator(final GraphicCalculator graphicCalculator)
+    {
+        this.graphicCalculator = graphicCalculator;
     }
 }
