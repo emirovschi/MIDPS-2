@@ -5,7 +5,7 @@ import org.apache.pivot.wtk.Label;
 
 public class NumericLabel
 {
-    public static final int MAX_LENGTH = 16;
+    public static final int MAX_LENGTH = 15;
 
     private final NumberConverter numberConverter;
     private final Label label;
