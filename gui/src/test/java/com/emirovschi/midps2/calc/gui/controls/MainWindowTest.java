@@ -1,5 +1,6 @@
 package com.emirovschi.midps2.calc.gui.controls;
 
+import com.emirovschi.midps2.calc.gui.DisableButtonErrorHandler;
 import com.emirovschi.midps2.calc.gui.GraphicCalculator;
 import com.emirovschi.midps2.calc.gui.KeyListener;
 import com.emirovschi.midps2.calc.operators.Operator;
@@ -10,7 +11,9 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class MainWindowTest
@@ -101,5 +104,33 @@ public class MainWindowTest
         mainWindow.register(button);
 
         verify(keyListener).bind(button);
+    }
+
+    @Test
+    public void shouldAddButtonToErrorHandler() throws Exception
+    {
+        final RegisteredPushButton button = mock(RegisteredPushButton.class);
+        final DisableButtonErrorHandler errorHandler = mock(DisableButtonErrorHandler.class);
+
+        when(button.isDisableOnError()).thenReturn(true);
+
+        mainWindow.setDisableButtonErrorHandler(errorHandler);
+        mainWindow.register(button);
+
+        verify(errorHandler).add(button);
+    }
+
+    @Test
+    public void shouldNotAddButtonToErrorHandler() throws Exception
+    {
+        final RegisteredPushButton button = mock(RegisteredPushButton.class);
+        final DisableButtonErrorHandler errorHandler = mock(DisableButtonErrorHandler.class);
+
+        when(button.isDisableOnError()).thenReturn(false);
+
+        mainWindow.setDisableButtonErrorHandler(errorHandler);
+        mainWindow.register(button);
+
+        verify(errorHandler, never()).add(button);
     }
 }

@@ -7,6 +7,9 @@ import com.emirovschi.midps2.calc.operators.MultiplyOperator;
 import com.emirovschi.midps2.calc.operators.Operator;
 import org.apache.pivot.wtk.Label;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class DefaultGraphicCalculator implements GraphicCalculator
 {
     private NumberConverter numberConverter;
@@ -14,6 +17,7 @@ public class DefaultGraphicCalculator implements GraphicCalculator
     private Calculator calculator;
     private Label currentOperation;
     private Label currentValue;
+    private List<CalculatorErrorHandler> errorHandlers = new ArrayList<>();
 
     @Override
     public void push(final int digit)
@@ -76,6 +80,11 @@ public class DefaultGraphicCalculator implements GraphicCalculator
         }
     }
 
+    @Override
+    public void addErrorHandler(final CalculatorErrorHandler handler)
+    {
+        errorHandlers.add(handler);
+    }
     public void setNumberConverter(final NumberConverter numberConverter)
     {
         this.numberConverter = numberConverter;

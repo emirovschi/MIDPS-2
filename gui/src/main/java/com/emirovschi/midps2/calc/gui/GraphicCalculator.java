@@ -15,4 +15,6 @@ public interface GraphicCalculator
     void clear();
 
     void changeSign();
+
+    void addErrorHandler(final CalculatorErrorHandler handler);
 }

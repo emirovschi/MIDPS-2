@@ -5,6 +5,7 @@ import com.emirovschi.midps2.calc.converters.DecimalNumberConverter;
 import com.emirovschi.midps2.calc.converters.NumberConverter;
 import com.emirovschi.midps2.calc.gui.ButtonRegister;
 import com.emirovschi.midps2.calc.gui.DefaultGraphicCalculator;
+import com.emirovschi.midps2.calc.gui.DisableButtonErrorHandler;
 import com.emirovschi.midps2.calc.gui.GraphicCalculator;
 import com.emirovschi.midps2.calc.gui.KeyListener;
 import com.emirovschi.midps2.calc.matcher.Matcher;
@@ -18,6 +19,7 @@ import org.apache.pivot.wtk.Label;
 import org.apache.pivot.wtk.Window;
 
 import java.net.URL;
+import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
 
@@ -25,6 +27,8 @@ public class MainWindow extends Window implements Bindable, ButtonRegister
 {
     private KeyListener keyListener;
     private GraphicCalculator graphicCalculator;
+
+    private DisableButtonErrorHandler disableButtonErrorHandler;
 
     @BXML
     private Label currentOperation;
@@ -36,6 +40,7 @@ public class MainWindow extends Window implements Bindable, ButtonRegister
     {
         keyListener = new KeyListener();
         getComponentKeyListeners().add(keyListener);
+        disableButtonErrorHandler = new DisableButtonErrorHandler();
     }
 
     @Override
@@ -49,6 +54,7 @@ public class MainWindow extends Window implements Bindable, ButtonRegister
         graphicCalculator.setCalculator(new SimpleCalculator());
         graphicCalculator.setCurrentOperation(currentOperation);
         graphicCalculator.setCurrentValue(currentValue);
+        graphicCalculator.addErrorHandler(disableButtonErrorHandler);
 
         setGraphicCalculator(graphicCalculator);
     }
@@ -58,6 +64,7 @@ public class MainWindow extends Window implements Bindable, ButtonRegister
     {
         addListener(button);
         addKeyBinding(button);
+        addDisableOnError(button);
     }
 
     private void addListener(final Button button)
@@ -79,10 +86,22 @@ public class MainWindow extends Window implements Bindable, ButtonRegister
 
     private void addKeyBinding(final Button button)
     {
-        Stream.of(button)
+        getRegisteredButton(button).ifPresent(keyListener::bind);
+    }
+
+    private void addDisableOnError(final Button button)
+    {
+        getRegisteredButton(button)
+                .filter(RegisteredPushButton::isDisableOnError)
+                .ifPresent(disableButtonErrorHandler::add);
+    }
+
+    private Optional<RegisteredPushButton> getRegisteredButton(final Button button)
+    {
+        return Stream.of(button)
                 .filter(b -> b instanceof RegisteredPushButton)
                 .map(b -> (RegisteredPushButton) b)
-                .forEach(keyListener::bind);
+                .findFirst();
     }
 
     @Override
@@ -103,13 +122,18 @@ public class MainWindow extends Window implements Bindable, ButtonRegister
         return super.keyReleased(keyCode, keyLocation);
     }
 
-    public void setKeyListener(final KeyListener keyListener)
+    protected void setKeyListener(final KeyListener keyListener)
     {
         this.keyListener = keyListener;
     }
 
-    public void setGraphicCalculator(final GraphicCalculator graphicCalculator)
+    protected void setGraphicCalculator(final GraphicCalculator graphicCalculator)
     {
         this.graphicCalculator = graphicCalculator;
+    }
+
+    protected void setDisableButtonErrorHandler(final DisableButtonErrorHandler disableButtonErrorHandler)
+    {
+        this.disableButtonErrorHandler = disableButtonErrorHandler;
     }
 }
