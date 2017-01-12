@@ -232,10 +232,10 @@ public class NumericLabelTest
             numericLabel.append(1);
         }
         
-        when(numberConverter.convert(1111111111111111D, 0)).thenReturn("1,111,111,111,111,111");
+        when(numberConverter.convert(111111111111111D, 0)).thenReturn("111,111,111,111,111");
 
-        assertEquals(1111111111111111D, numericLabel.getNumber(), 0.0001);
-        assertEquals("1,111,111,111,111,111", numericLabel.getNumberText());
+        assertEquals(111111111111111D, numericLabel.getNumber(), 0.0001);
+        assertEquals("111,111,111,111,111", numericLabel.getNumberText());
     }
 
     @Test
@@ -247,10 +247,10 @@ public class NumericLabelTest
         }
         numericLabel.startDecimal();
 
-        when(numberConverter.convert(1111111111111111D, 0)).thenReturn("1,111,111,111,111,111");
+        when(numberConverter.convert(111111111111111D, 0)).thenReturn("111,111,111,111,111");
 
-        assertEquals(1111111111111111D, numericLabel.getNumber(), 0.0001);
-        assertEquals("1,111,111,111,111,111", numericLabel.getNumberText());
+        assertEquals(111111111111111D, numericLabel.getNumber(), 0.0001);
+        assertEquals("111,111,111,111,111", numericLabel.getNumberText());
     }
 
     @Test
@@ -262,9 +262,9 @@ public class NumericLabelTest
             numericLabel.append(1);
         }
 
-        when(numberConverter.convert(eq(0.111111111111111D, 0.0000000000000001D), eq(16))).thenReturn("0.111111111111111");
+        when(numberConverter.convert(eq(0.111111111111111D, 0.000000000000001D), eq(MAX_LENGTH))).thenReturn("0.111111111111111");
 
-        assertEquals(0.111111111111111D, numericLabel.getNumber(), 0.0000000000000001D);
+        assertEquals(0.111111111111111D, numericLabel.getNumber(), 0.000000000000001D);
         assertEquals("0.111111111111111", numericLabel.getNumberText());
     }
 
