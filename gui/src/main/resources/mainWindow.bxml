@@ -1,0 +1,70 @@
+<controls:MainWindow title="Calculator" maximized="true" bxml:id="mainWindow"
+                xmlns:bxml="http://pivot.apache.org/bxml"
+                xmlns:controls="com.emirovschi.midps2.calc.gui.controls"
+                xmlns="org.apache.pivot.wtk">
+    <TablePane styles="{verticalSpacing:0, showHorizontalGridLines:false, horizontalSpacing:0, showVerticalGridLines:false}">
+        <columns>
+            <TablePane.Column width="1*"/>
+            <TablePane.Column width="1*"/>
+            <TablePane.Column width="1*"/>
+            <TablePane.Column width="1*"/>
+            <TablePane.Column width="1*"/>
+        </columns>
+
+        <TablePane.Row height="1*">
+            <Label bxml:id="currentOperation" TablePane.columnSpan="5"
+                   styles="{horizontalAlignment:'right',  verticalAlignment:'center', wrapText:true, font:{size:15}}}"/>
+        </TablePane.Row>
+        <TablePane.Row height="1*">
+            <Separator TablePane.columnSpan="5"/>
+        </TablePane.Row>
+        <TablePane.Row height="2*">
+            <Label bxml:id="currentValue" TablePane.columnSpan="5" text="0"
+                   styles="{horizontalAlignment:'right',  verticalAlignment:'center', wrapText:true, font:{size:30, bold:true}}"/>
+        </TablePane.Row>
+
+        <TablePane.Row height="2*">
+            <controls:InputButton digit="1" keys="1" register="$mainWindow" styles="{font:{size:30, bold:true}}"/>
+            <controls:InputButton digit="2" keys="2" register="$mainWindow" styles="{font:{size:30, bold:true}}"/>
+            <controls:InputButton digit="3" keys="3" register="$mainWindow" styles="{font:{size:30, bold:true}}"/>
+            <controls:OperatorButton buttonData="+" keys="+" disableOnError="true"
+                                     operator="com.emirovschi.midps2.calc.operators.AddOperator"
+                                     register="$mainWindow" styles="{font:{size:30, bold:true}}"/>
+            <controls:OperatorButton buttonData="-" keys="-" disableOnError="true"
+                                     operator="com.emirovschi.midps2.calc.operators.SubtractOperator"
+                                     register="$mainWindow" styles="{font:{size:30, bold:true}}"/>
+        </TablePane.Row>
+        <TablePane.Row height="2*">
+            <controls:InputButton digit="4" keys="4" register="$mainWindow" styles="{font:{size:30, bold:true}}"/>
+            <controls:InputButton digit="5" keys="5" register="$mainWindow" styles="{font:{size:30, bold:true}}"/>
+            <controls:InputButton digit="6" keys="6" register="$mainWindow" styles="{font:{size:30, bold:true}}"/>
+            <controls:OperatorButton buttonData="×" keys="x,*" disableOnError="true"
+                                     operator="com.emirovschi.midps2.calc.operators.MultiplyOperator"
+                                     register="$mainWindow" styles="{font:{size:30, bold:true}}"/>
+            <controls:OperatorButton buttonData="/" keys="/,:" disableOnError="true"
+                                     operator="com.emirovschi.midps2.calc.operators.DivideOperator"
+                                     register="$mainWindow" styles="{font:{size:30, bold:true}}"/>
+        </TablePane.Row>
+        <TablePane.Row height="2*">
+            <controls:InputButton digit="7" keys="7" register="$mainWindow" styles="{font:{size:30, bold:true}}"/>
+            <controls:InputButton digit="8" keys="8" register="$mainWindow" styles="{font:{size:30, bold:true}}"/>
+            <controls:InputButton digit="9" keys="9" register="$mainWindow" styles="{font:{size:30, bold:true}}"/>
+            <controls:OperatorButton buttonData="^" keys="^" disableOnError="true"
+                                     operator="com.emirovschi.midps2.calc.operators.PowerOperator"
+                                     register="$mainWindow" styles="{font:{size:30, bold:true}}"/>
+            <controls:OperatorButton buttonData="√" disableOnError="true"
+                                     operator="com.emirovschi.midps2.calc.operators.RootOperator"
+                                     register="$mainWindow" styles="{font:{size:30, bold:true}}"/>
+        </TablePane.Row>
+        <TablePane.Row height="2*">
+            <controls:DecimalButton buttonData="." keys=".,\44" disableOnError="true" register="$mainWindow"
+                                    styles="{font:{size:30, bold:true}}"/>
+            <controls:InputButton digit="0" keys="0" register="$mainWindow" styles="{font:{size:30, bold:true}}"/>
+            <controls:ChangeSignButton buttonData="+/-" keys="~,!" disableOnError="true" register="$mainWindow"
+                                       styles="{font:{size:30, bold:true}}"/>
+            <controls:ClearButton buttonData="C" keys="\127" register="$mainWindow" styles="{font:{size:30, bold:true}}"/>
+            <controls:EqualsButton buttonData="=" keys="=,\10" disableOnError="true" register="$mainWindow"
+                                   styles="{font:{size:30, bold:true}}"/>
+        </TablePane.Row>
+    </TablePane>
+</controls:MainWindow>
